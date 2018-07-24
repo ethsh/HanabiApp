@@ -1,5 +1,5 @@
 import socket
-from time import sleep
+from Common.HanabiProtocol import *
 from thread import *
 
 HOST = 'localhost'  # Symbolic name meaning all available interfaces
@@ -7,15 +7,14 @@ PORT = 8888         # Arbitrary non-privileged port
 
 
 class PlayerClient:
-    def __init__(self):
+    def __init__(self, name):
         self.client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        pass
+        self.name = name
 
     def connect(self):
         self.client_socket.connect((HOST, PORT))
-        print 'Socket connected and recv thread started'
         start_new_thread(self.recv_func, ())
-        print 'Socket connected and recv thread started'
+        self.register()
 
     def send_message(self, data):
         self.client_socket.send(data)
@@ -40,4 +39,6 @@ class PlayerClient:
     def disconnect(self):
         self.client_socket.close()
         print 'Socket closed'
-    pass
+
+    def register(self):
+        self.send_message(HanabiProtocol.create_registration_packet(PacketDirection.Client2Server, self.name))
