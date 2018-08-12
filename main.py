@@ -10,6 +10,8 @@ def main():
     player2 = PlayerClient("Player2")
     player1.connect()
     player2.connect()
+    player1.send_message("Player1_message")
+    player2.send_message("Player2_message")
     while True:
         sleep(5)
     pass

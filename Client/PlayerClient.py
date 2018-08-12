@@ -1,4 +1,5 @@
 import socket
+import select
 from Common.HanabiProtocol import *
 from thread import *
 
@@ -20,21 +21,19 @@ class PlayerClient:
         self.client_socket.send(data)
 
     def recv_func(self):
-        while True:
-            try:
-                reply = self.client_socket.recv(131072)
-                if not reply:
-                    break
-                print "recvd: ", reply
-            except KeyboardInterrupt:
-                print "bye"
-                break
+        try:
+            while True:
+                ready = select.select([self.client_socket], [], [])
+                if not ready[0]:
+                    continue
+                data = self.client_socket.recv(4096)
+                print '\n' + data + '\n'
+        except KeyboardInterrupt:
+            print "bye"
+
         self.client_socket.close()
+
         return
-
-
-
-        pass
 
     def disconnect(self):
         self.client_socket.close()

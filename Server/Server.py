@@ -64,25 +64,34 @@ def clientthread(conn):
         conn.close()
         return
 
-    data = conn.recv(4096)
-
-    # save the player
-    # TODO : the name isnt data. need to parse the packet
-
-    pkt_res = HanabiProtocol.parse_message(data)
-    if not (pkt_res[0] == PacketType.Registration and pkt_res[1] == PacketDirection.Client2Server):
+    name = rec_client_name(conn)
+    if name is None:
         conn.close()
         return
 
-    name = pkt_res[2]
     player = Player(name, conn)
     players_list.append(player)
 
-    print 'All players are: '
+    print '\nAll players are: '
     print ' '.join(str(p) for p in players_list)
+    print '\n'
 
     while True:
-        time.sleep(5)
-    # came out of loop
-    # conn.close()
+        ready = select.select([conn], [], [])
+        if not ready[0]:
+            continue
+        data = conn.recv(4096)
+        print '\n' + data + '\n'
 
+    # came out of loop
+    conn.close()
+
+
+def rec_client_name(conn):
+    data = conn.recv(4096)
+    # save the player
+    pkt_res = HanabiProtocol.parse_message(data)
+    if not (pkt_res[0] == PacketType.Registration and pkt_res[1] == PacketDirection.Client2Server):
+        return
+    name = pkt_res[2]
+    return name

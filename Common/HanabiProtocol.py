@@ -4,8 +4,8 @@ import struct
 PacketType = Enum('PacketType', 'Registration')
 PacketDirection = Enum('PacketDirection', 'Client2Server Server2Client')
 
-class HanabiProtocol:
 
+class HanabiProtocol:
     @staticmethod
     def create_registration_packet(direction, name=""):
         ret_pkt = struct.pack('bb', PacketType.Registration.value, direction.value)
