@@ -22,6 +22,9 @@ class Card:
     def get_number(self):
         return self.number
 
+    def __str__(self):
+        return '{number},{color}'.format(number=self.get_number(), color=self.get_color())
+
 
 class AbstractTurnOperation:
     __metaclass__ = abc.ABCMeta
@@ -70,25 +73,11 @@ class Deck:
         shuffle(self.deck)
 
     def draw_card(self):
+        if self.get_num_of_remaining_cards() is 0:
+            return None
         card = self.deck[0]
         self.deck = self.deck[1:]
         return card
 
-    def get_num_pf_remaining_cards(self):
+    def get_num_of_remaining_cards(self):
         return len(self.deck)
-
-
-
-
-def CardsFactory(name, argnames, BaseClass=Card):
-    def __init__(self, **kwargs):
-        for key, value in kwargs.items():
-            # here, the argnames variable is the one passed to the
-            # ClassFactory call
-            if key not in argnames:
-                raise TypeError("Argument %s not valid for %s"
-                    % (key, self.__class__.__name__))
-            setattr(self, key, value)
-        BaseClass.__init__(self, name[:-len("Class")])
-    newclass = type(name, (BaseClass,),{"__init__": __init__})
-    return newclass

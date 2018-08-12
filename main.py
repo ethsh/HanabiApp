@@ -1,10 +1,20 @@
 from Server.Server import *
 from Client.PlayerClient import *
+from Common.Cards import *
 from time import sleep
 from Common.HanabiProtocol import *
 
 
 def main():
+    deck = Deck()
+    new_card = deck.draw_card()
+    # turn = NumberTurnOperation(Numbers.ONE)
+    turn = ColorTurnOperation(Colors.RED)
+
+    while new_card is not None:
+        print str(new_card) + str(turn.card_result(new_card))
+        new_card = deck.draw_card()
+
     server = HanabiServer()
     player1 = PlayerClient("Player1")
     player2 = PlayerClient("Player2")
