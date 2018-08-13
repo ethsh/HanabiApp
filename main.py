@@ -1,3 +1,4 @@
+from Common.Game import HanabiGame
 from Server.Server import *
 from Client.PlayerClient import *
 from Common.Cards import *
@@ -6,6 +7,13 @@ from Common.HanabiProtocol import *
 
 
 def main():
+    player1 = Player("Player1")
+    player2 = Player("Player2")
+    player3 = Player("Player3")
+    players_list = [player1, player2, player3]
+    hanabi = HanabiGame(players_list, GameOptions.INCLUDING_RAINBOW_PILE)
+
+
     deck = Deck()
     new_card = deck.draw_card()
     # turn = NumberTurnOperation(Numbers.ONE)
