@@ -1,4 +1,3 @@
-import abc
 from enum import Enum
 import itertools
 from random import shuffle
@@ -26,30 +25,6 @@ class Card:
 
     def __str__(self):
         return '{number}-{color}'.format(number=self.get_number(), color=self.get_color())
-
-
-class AbstractTurnOperation:
-    __metaclass__ = abc.ABCMeta
-
-    @abc.abstractmethod
-    def card_result(self, card):
-        pass
-
-
-class NumberTurnOperation(AbstractTurnOperation):
-    def __init__(self, number):
-        self.number = number
-
-    def card_result(self, card):
-        return card.get_number() == self.number
-
-
-class ColorTurnOperation(AbstractTurnOperation):
-    def __init__(self, color):
-        self.color = color
-
-    def card_result(self, card):
-        return card.get_color() == self.color or card.get_color() is Colors.RAINBOW
 
 
 class Deck:

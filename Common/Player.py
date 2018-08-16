@@ -1,9 +1,11 @@
 class Player:
-    def __init__(self, name):
-        self.name = name
-        # self.sock = sock
+    def __init__(self):
         self.cards = []
         self.game = None
+
+    def enter_game(self, game):
+        self.game = game
+        self.cards = []
 
     def receive_card(self, card):
         self.cards.append(card)

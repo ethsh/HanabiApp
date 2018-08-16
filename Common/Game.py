@@ -2,6 +2,7 @@ from Cards import *
 
 CARDS_PER_PLAYER = 4
 
+
 class HanabiGame:
     def __init__(self, players_list, game_option):
         self.players_list = players_list

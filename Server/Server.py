@@ -3,7 +3,7 @@ import sys
 from thread import *
 import time
 from Common.Player import Player
-from Common.HanabiProtocol import HanabiProtocol, PacketType, PacketDirection
+from Common.HanabiProtocol import HanabiMessage, PacketType
 import select
 
 
@@ -51,6 +51,22 @@ class HanabiServer:
         print 'Socket now listening'
         return sock
 
+    def start_game(self):
+
+        pass
+
+
+class PlayerConnection:
+    def __init__(self, name, conn):
+        self.name = name
+        self.conn = conn
+
+    def __str__(self):
+        return self.name
+
+    def draw_card(self, card):
+        self.conn.send(HanabiMessage(PacketType.RECEIVE_CARD, card=card).serialize_message())
+
 
 # Function for handling connections. This will be used to create threads
 def clientthread(conn):
@@ -69,7 +85,7 @@ def clientthread(conn):
         conn.close()
         return
 
-    player = Player(name, conn)
+    player = PlayerConnection(name, conn)
     players_list.append(player)
 
     print '\nAll players are: '
@@ -90,8 +106,9 @@ def clientthread(conn):
 def rec_client_name(conn):
     data = conn.recv(4096)
     # save the player
-    pkt_res = HanabiProtocol.parse_message(data)
-    if not (pkt_res[0] == PacketType.Registration and pkt_res[1] == PacketDirection.Client2Server):
+
+    msg = HanabiMessage.deserialize_msg(data)
+    if not (msg.msg_type == PacketType.REGISTRATION):
         return
-    name = pkt_res[2]
+    name = msg.kwargs['name']
     return name
