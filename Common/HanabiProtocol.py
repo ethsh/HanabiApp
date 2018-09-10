@@ -3,7 +3,6 @@ import struct
 import pickle
 
 PacketType = Enum('PacketType', 'REGISTRATION ENTER_GAME RECEIVE_CARD OPERATION')
-# PacketDirection = Enum('PacketDirection', 'Client2Server Server2Client')
 
 
 class HanabiMessage:

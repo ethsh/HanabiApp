@@ -1,8 +1,6 @@
 import socket
 import sys
 from thread import *
-import time
-from Common.Player import Player
 from Common.HanabiProtocol import HanabiMessage, PacketType
 import select
 

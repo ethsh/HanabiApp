@@ -29,6 +29,9 @@ class PlayerClient:
     def send_message(self, data):
         self.client_socket.send(data)
 
+    def handle_message(self, msg):
+        pass
+
     def recv_func(self):
         while True:
             ready = select.select([self.client_socket], [], [])
@@ -37,6 +40,7 @@ class PlayerClient:
             data = self.client_socket.recv(4096)
             msg = HanabiMessage.deserialize_msg(data)
             print '\n' + msg.msg_type + '\n'
+            self.handle_message(msg)
 
         self.client_socket.close()
         return
