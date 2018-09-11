@@ -5,6 +5,7 @@ from random import shuffle
 
 Colors = Enum('Colors', 'RED GREEN BLUE WHITE YELLOW RAINBOW')
 Numbers = Enum('Numbers', 'ONE TWO THREE FOUR FIVE')
+
 Operations = Enum('Operations', 'COLOR NUMBER')
 
 GameOptions = Enum('GameOptions', 'ONLY_COLORS_PILES INCLUDING_RAINBOW_PILE')
@@ -66,6 +67,9 @@ class BurntCards:
 
     def burn_card(self, card):
         self.cards.extend(card)
+
+    def view_burnt_cards(self):
+        return self.cards
 
     def __str__(self):
         return ','.join(map(str, self.cards))

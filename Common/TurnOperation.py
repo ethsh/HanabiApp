@@ -29,3 +29,14 @@ class ColorUpdateTurnOperation(AbstractUpdateTurnOperation):
 
     def card_result(self, card):
         return card.get_color() == self.color or card.get_color() is Colors.RAINBOW
+
+
+class BurnCardOperation:
+    def __init__(self, card):
+        self.card_to_burn = card
+
+
+class PlaceCardOperation:
+    def __init__(self, card, pile_color):
+        self.card = card
+        self.pile_color = pile_color
