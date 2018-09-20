@@ -2,17 +2,23 @@ from Cards import *
 from TurnOperation import *
 
 CARDS_PER_PLAYER = 4
+MINIMUM_PLAYERS = 2
+
+MAXIMUM_NUMBER_OF_UPDATES = 8
+NUMBER_OF_BURNS = 3
 
 
 class HanabiGame:
     def __init__(self, players_list, game_option):
-        if len(players_list) < 2:
+        if len(players_list) < MINIMUM_PLAYERS:
             raise Exception('can\'t play a game with less than 2 players!')
         self.__players_list = players_list
         for player in self.__players_list:
             player.enter_game(self)
         self.current_player_index = 0
         self.game_option = game_option
+        self.updates_left = MAXIMUM_NUMBER_OF_UPDATES
+        self.burns_left = NUMBER_OF_BURNS
         self.deck = Deck()
         self.board = BoardCards(self.game_option)
         self.burnt_cards = BurntCards()
@@ -38,12 +44,15 @@ class HanabiGame:
             self.handle_burn_card(current_player, turn)
         elif turn.op_type == OperationType.PlaceCard:
             self.handle_place_card(current_player, turn)
+        elif turn.op_type == OperationType.PlaceCard:
+            self.handle_update_player(current_player, turn)
         else:
-            raise Exception('Operation Not Implemented!')
+            raise Exception('Invalid Operation!')
 
     def handle_burn_card(self, current_player, turn):
         self.burnt_cards.burn_card(turn.card_to_burn)
         current_player.receive_card(self.deck.draw_card())
+        self.updates_left = min(self.updates_left + 1, MAXIMUM_NUMBER_OF_UPDATES)
 
     def handle_place_card(self, current_player, turn):
         card_to_place = turn.card_to_place
@@ -61,7 +70,12 @@ class HanabiGame:
             current_player.receive_card(self.deck.draw_card())
 
     def handle_update_player(self, current_player, turn):
-        return "March"
+        raise Exception('Operation UpdatePlayer Not Implemented!')
+        if self.updates_left == 0:
+            # TODO : what happens now?
+            return
+        self.updates_left = self.updates_left - 1
+
 
 
 
