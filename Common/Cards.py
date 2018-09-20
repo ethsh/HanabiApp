@@ -66,7 +66,7 @@ class BurntCards:
         self.cards = []
 
     def burn_card(self, card):
-        self.cards.extend(card)
+        self.cards.extend([card])
 
     def view_burnt_cards(self):
         return self.cards
@@ -94,7 +94,8 @@ class BoardCards:
 
             if color_match and \
                     (len(self.card_piles[color]) == 0 and card.get_number() == 1) or \
-                    (self.card_piles[color][-1].get_number() == card.get_number() - 1):
+                    (len(self.card_piles[color]) > 0 and
+                     self.card_piles[color][-1].get_number() == card.get_number() - 1):
                 placing_options.extend(color)
 
         return placing_options
