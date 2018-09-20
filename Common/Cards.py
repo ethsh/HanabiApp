@@ -93,17 +93,17 @@ class BoardCards:
                 color_match = True
 
             if color_match and \
-                    (len(self.card_piles[color]) == 0 and card.get_number() == 1) or \
+                    (len(self.card_piles[color]) == 0 and card.get_number() == Numbers.ONE) or \
                     (len(self.card_piles[color]) > 0 and
                      self.card_piles[color][-1].get_number() == card.get_number() - 1):
-                placing_options.extend(color)
+                placing_options.extend([color])
 
         return placing_options
 
     def place_card(self, card, color):
         if color not in self.can_place_card(card):
             raise Exception('Tried to place card in invalid pile!')
-        self.card_piles[color].extend(card)
+        self.card_piles[color].extend([card])
 
     def __str__(self):
         ret_str = ''

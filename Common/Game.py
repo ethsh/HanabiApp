@@ -50,11 +50,11 @@ class HanabiGame:
         placing_options = self.board.can_place_card(card_to_place)
         if len(placing_options) == 0:
             # TODO - handle this
-            pass
+            raise Exception('Operation Not Implemented - trying to place card that can not be placed')
         else:
             if len(placing_options) > 1:
                 # TODO - handle this as well
-                pass
+                raise Exception('Operation Not Implemented - trying to place card that can be placed in several piles')
             else:
                 # only one option to place card
                 self.board.place_card(card_to_place, placing_options[0])
